@@ -1,69 +1,52 @@
-# CodeIgniter 4 Application Starter
+# 🚗 Sistem Informasi Rental Mobil - Kelompok 2
 
-## What is CodeIgniter?
+Aplikasi berbasis web manajemen rental mobil modern yang dibangun menggunakan arsitektur **Object-Oriented Programming (OOP)** dengan Framework **CodeIgniter 4**, integrasi **Firebase Authentication**, dan database **MySQL**. Proyek ini dikembangkan untuk memenuhi tugas besar mata kuliah Pemrograman Web / Rekayasa Perangkat Lunak.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+---
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## 👥 Anggota Kelompok 2
+* **Irvan Agus Saputra** - Informatics Engineering, Universitas Pelita Bangsa
+* [Nama Anggota 2] - [Peran/Kontribusi]
+* [Nama Anggota 3] - [Peran/Kontribusi]
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+---
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## 🚀 Fitur Utama Sistem
 
-## Installation & updates
+### 1. Multi-Role Authentication (Firebase Auth)
+Mengamankan gerbang masuk aplikasi dengan memisahkan hak akses antara pengelola dan pelanggan:
+* **Admin Dashboard:** Autentikasi menggunakan kombinasi *Email & Password* melalui Firebase Auth Core.
+* **User/Pelanggan:** Autentikasi instan menggunakan akun Google (*Single Sign-On*) dan fitur registrasi mandiri.
+* **Secure Redirect & Error Handling:** Dilengkapi proteksi *server-side session validation* (CI4 Filters). Jika login gagal atau data salah, sistem otomatis menampilkan notifikasi error dan mengarahkan kembali ke halaman login.
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+### 2. Manajemen CRUD Transaksi (OOP-Driven)
+Manajemen data operasional rental yang dikelola secara terstruktur dengan konsep MVC murni:
+* **Create:** Input data sewa baru (Unit mobil, jenis sewa lepas kunci/sopir, biaya sewa, DP, dan tanggal operasional).
+* **Read:** Monitoring ketersediaan armada, detail penyewa aktif, dan riwayat transaksi secara real-time.
+* **Update:** Fleksibilitas pembaruan data untuk perpanjangan waktu sewa, kalkulasi denda keterlambatan, dan pelunasan kas.
+* **Delete:** Fitur penghapusan atau pengarsipan data transaksi lama demi efisiensi database.
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### 3. Cetak Dokumen & Laporan Kustom (PDF Engine)
+Fitur cetak dokumen digital berbasis HTML-to-PDF menggunakan library **Dompdf** yang desain layout-nya dapat disesuaikan (*customizable*):
+* **Cetak Nota Sewa:** Bukti transaksi otentik untuk pelanggan saat unit keluar atau masuk (Format A5).
+* **Laporan Harian:** Log manifest penyewa, *Checklist* kondisi fisik mobil (BBM & baret bodi), serta rekapitulasi penerimaan kas harian.
+* **Laporan Bulanan:** Evaluasi laporan Laba-Rugi bulanan, rekap biaya servis berkala, kompilasi penagihan (*Invoice*), dan daftar piutang sewa.
+* **Laporan Tahunan:** Rekapitulasi finansial tahunan, Neraca Keuangan (*Asset, Kewajiban, Ekuitas*), serta perhitungan nilai penyusutan (*depresiasi*) aset kendaraan.
 
-## Setup
+---
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+## 🛠️ Tech Stack & Library
+* **Backend:** PHP 8.1+, Framework CodeIgniter 4
+* **Database:** MySQL / MariaDB Engine
+* **Autentikasi:** Firebase Auth Client SDK v10.x
+* **Renderer PDF:** Dompdf v2.0+
+* **Frontend:** Bootstrap 5, Modern Vanilla JS (Fetch API), HTML5, CSS3
 
-## Important Change with index.php
+---
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+## 📦 Cara Instalasi Proyek di Lokal
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 8.2 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+1. **Clone Repositori:**
+   ```bash
+   git clone [https://github.com/IrvanVillagerCode/](https://github.com/IrvanVillagerCode/)[nama-repo-anda].git
+   cd [nama-repo-anda]
