@@ -48,5 +48,5 @@ Fitur cetak dokumen digital berbasis HTML-to-PDF menggunakan library **Dompdf** 
 
 1. **Clone Repositori:**
    ```bash
-   git clone [https://github.com/IrvanVillagerCode/](https://github.com/IrvanVillagerCode/)[nama-repo-anda].git
+   git clone [[https://github.com/IrvanVillagerCode/](https://github.com/IrvanVillagerCode/)[nama-repo-anda].git](https://github.com/IrvanVillagerCode/rental_mobil.git)
    cd [nama-repo-anda]
