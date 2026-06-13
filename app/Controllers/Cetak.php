@@ -25,7 +25,7 @@ class Cetak extends BaseController
         $this->mobilModel     = new MobilModel();
     }
 
-    private function renderPdf(string $html, string $filename): void
+    private function renderPdf(string $html, string $filename, string $paper = 'A4', string $orientation = 'portrait'): void
     {
         $options = new Options();
         $options->set('defaultFont', 'DejaVu Sans');
@@ -34,23 +34,22 @@ class Cetak extends BaseController
 
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper($paper, $orientation);
         $dompdf->render();
         $dompdf->stream($filename, ['Attachment' => false]);
         exit;
     }
 
     // Nota transaksi per ID sewa
-    public function nota(int $id): void
+    public function nota(int $id)
     {
         $sewa    = $this->penyewaanModel->getWithMobil($id);
         $kondisi = $this->kondisiModel->getBySewa($id);
         if (!$sewa) {
-            redirect()->to('/penyewaan')->with('error', 'Data tidak ditemukan!');
-            return;
+            return redirect()->to('/penyewaan')->with('error', 'Data tidak ditemukan!');
         }
         $html = view('cetak/nota_pdf', ['sewa' => $sewa, 'kondisi' => $kondisi]);
-        $this->renderPdf($html, "Nota_Sewa_{$id}.pdf");
+        $this->renderPdf($html, "Nota_Sewa_{$id}.pdf", 'A5', 'portrait');
     }
 
     // Laporan Harian
