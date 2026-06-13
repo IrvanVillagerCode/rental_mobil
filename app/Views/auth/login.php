@@ -137,7 +137,7 @@
         const BASE_URL = "<?= base_url() ?>";
 
         function showError(msg) {
-            document.getElementById('error-msg').textContent = msg;
+            document.getElementById('error-msg').innerHTML = msg;
             document.getElementById('error-box').style.display = 'flex';
         }
 
@@ -213,14 +213,37 @@
             const nama = document.getElementById('reg-nama').value.trim();
             const email = document.getElementById('reg-email').value.trim();
             const password = document.getElementById('reg-password').value;
+            
             if (!nama || !email || !password) {
                 showError('Semua field wajib diisi!');
                 return;
             }
+            
             if (password.length < 8) {
                 showError('Password minimal 8 karakter!');
                 return;
             }
+            
+            // Validasi format email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('Format email tidak valid!');
+                return;
+            }
+            
+            // Cek apakah email sudah terdaftar di database lokal
+            try {
+                const checkRes = await fetch(BASE_URL + 'auth/check-email-exists?email=' + encodeURIComponent(email));
+                const checkData = await checkRes.json();
+                
+                if (checkData.exists) {
+                    showError('Email ini sudah terdaftar. <br><strong>Silakan login</strong> dengan akun Anda atau gunakan email lain untuk mendaftar.');
+                    return;
+                }
+            } catch (e) {
+                console.warn('Email check failed, continuing with registration:', e);
+            }
+            
             setLoading('btn-register', true);
             try {
                 const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -229,7 +252,20 @@
                 });
                 await sendSession(cred.user, 'user');
             } catch (e) {
-                showError('Registrasi gagal: ' + e.message);
+                // Handle specific Firebase errors
+                let errorMsg = 'Registrasi gagal: ' + e.message;
+                
+                if (e.code === 'auth/email-already-in-use') {
+                    errorMsg = 'Email ini sudah terdaftar. <br><strong>Silakan login</strong> dengan akun Anda atau gunakan email lain untuk mendaftar.';
+                } else if (e.code === 'auth/weak-password') {
+                    errorMsg = 'Password terlalu lemah. Gunakan kombinasi huruf, angka, dan simbol.';
+                } else if (e.code === 'auth/invalid-email') {
+                    errorMsg = 'Format email tidak valid!';
+                } else if (e.code === 'auth/operation-not-allowed') {
+                    errorMsg = 'Registrasi sedang dinonaktifkan. Hubungi admin.';
+                }
+                
+                showError(errorMsg);
                 setLoading('btn-register', false);
             }
         };

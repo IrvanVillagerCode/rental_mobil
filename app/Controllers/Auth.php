@@ -87,4 +87,25 @@ class Auth extends BaseController
         session()->destroy();
         return redirect()->to('/login');
     }
+
+    // Check apakah email sudah terdaftar (AJAX)
+    public function checkEmailExists(): \CodeIgniter\HTTP\ResponseInterface
+    {
+        $email = $this->request->getGet('email') ?? '';
+        
+        if (empty($email)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Email tidak boleh kosong'
+            ])->setStatusCode(400);
+        }
+
+        // Cek di database lokal
+        $existingUser = $this->userModel->findByEmail($email);
+        
+        return $this->response->setJSON([
+            'exists' => !empty($existingUser),
+            'user'   => $existingUser
+        ]);
+    }
 }

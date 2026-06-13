@@ -9,6 +9,7 @@ $routes->get('/', 'Home::index');
 $routes->get('/home', 'Home::index');
 $routes->get('/home/get-mobil-ajax', 'Home::getMobilAjax');
 $routes->get('/login', 'Auth::index');
+$routes->get('/auth/check-email-exists', 'Auth::checkEmailExists');
 $routes->post('/auth/set-session', 'Auth::setSession');
 $routes->get('/logout', 'Auth::logout');
 
