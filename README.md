@@ -33,6 +33,13 @@ Fitur cetak dokumen digital berbasis HTML-to-PDF menggunakan library **Dompdf** 
 * **Laporan Bulanan:** Evaluasi laporan Laba-Rugi bulanan, rekap biaya servis berkala, kompilasi penagihan (*Invoice*), dan daftar piutang sewa.
 * **Laporan Tahunan:** Rekapitulasi finansial tahunan, Neraca Keuangan (*Asset, Kewajiban, Ekuitas*), serta perhitungan nilai penyusutan (*depresiasi*) aset kendaraan.
 
+### 4. Simulasi Payment Gateway & Real-Time Dashboard
+Menerapkan alur transaksi modern yang interaktif dari sisi pelanggan hingga pengelola:
+* **Mockup Payment Online:** Simulasi metode pembayaran instan (Transfer Bank & E-Wallet) yang mendukung cicilan parsial/DP (*Partial Payment*) dengan validasi nominal terstruktur.
+* **Smart Dashboard & Notifications:** Pemantauan tagihan secara *real-time*. Jika ada tagihan yang belum lunas, sistem secara otomatis menampilkan *banner* peringatan kuning untuk penagihan instan.
+* **Auto-Timer & Penalty System:** Penghitung waktu mundur sisa masa sewa yang langsung berubah menjadi peringatan keras (Alert Merah) berserta informasi denda ketika pengembalian telat.
+* **One-Click Approval Admin:** Sinkronisasi status; transaksi pelanggan yang memilih 'Bayar Langsung' harus mendapat validasi 1-klik dari Admin sebelum berstatus aktif/berjalan.
+
 ---
 
 ## 🛠️ Tech Stack & Library
