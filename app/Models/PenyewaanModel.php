@@ -93,4 +93,14 @@ class PenyewaanModel extends Model
     {
         return $this->whereIn('status_transaksi', ['booking', 'berjalan'])->countAllResults();
     }
+
+    public function getByUser(string $idUser): array
+    {
+        return $this->db->table('penyewaan p')
+            ->select('p.*, m.merek, m.model, m.nopol_mobil, m.harga_sewa_perhari')
+            ->join('mobil m', 'm.id_mobil = p.id_mobil', 'left')
+            ->where('p.id_user', $idUser)
+            ->orderBy('p.created_at', 'DESC')
+            ->get()->getResultArray();
+    }
 }

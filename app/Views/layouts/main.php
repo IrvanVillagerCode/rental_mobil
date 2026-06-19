@@ -13,13 +13,13 @@
 <body>
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
+        <a href="<?= base_url('/') ?>" class="sidebar-brand">
             <i class="bi bi-car-front-fill brand-icon"></i>
             <div>
                 <div class="brand-name">RentaCar</div>
                 <div class="brand-sub">Management System</div>
             </div>
-        </div>
+        </a>
 
         <nav class="sidebar-nav">
             <div class="nav-label">MENU UTAMA</div>

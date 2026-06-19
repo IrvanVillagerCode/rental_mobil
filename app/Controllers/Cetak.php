@@ -46,8 +46,16 @@ class Cetak extends BaseController
         $sewa    = $this->penyewaanModel->getWithMobil($id);
         $kondisi = $this->kondisiModel->getBySewa($id);
         if (!$sewa) {
-            return redirect()->to('/penyewaan')->with('error', 'Data tidak ditemukan!');
+            return redirect()->to('/dashboard')->with('error', 'Data tidak ditemukan!');
         }
+
+        // Security check: only allow admins or the user who owns the rental
+        $role = session()->get('role');
+        $uid  = session()->get('uid');
+        if ($role !== 'admin' && $sewa['id_user'] !== $uid) {
+            return redirect()->to('/dashboard')->with('error', 'Anda tidak memiliki akses ke nota ini!');
+        }
+
         $html = view('cetak/nota_pdf', ['sewa' => $sewa, 'kondisi' => $kondisi]);
         $this->renderPdf($html, "Nota_Sewa_{$id}.pdf", 'A5', 'portrait');
     }

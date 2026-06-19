@@ -78,15 +78,28 @@
                     </svg>
                     Masuk dengan Google
                 </button>
-                <div class="divider"><span>atau daftar akun baru</span></div>
-                <div class="form-group">
+                
+                <div class="divider"><span>atau gunakan email</span></div>
+
+                <!-- Sub-tabs for User (Login vs Register) -->
+                <div class="user-action-toggle">
+                    <a href="javascript:void(0)" id="userToggleLogin" class="user-toggle-btn active" onclick="switchUserAction('login')">Masuk</a>
+                    <a href="javascript:void(0)" id="userToggleRegister" class="user-toggle-btn" onclick="switchUserAction('register')">Daftar Baru</a>
+                </div>
+
+                <!-- Nama Lengkap (Hanya tampil saat Register) -->
+                <div class="form-group" id="user-group-nama" style="display:none">
                     <label for="reg-nama">Nama Lengkap</label>
                     <input type="text" id="reg-nama" class="form-control" placeholder="Nama lengkap Anda">
                 </div>
+
+                <!-- Email -->
                 <div class="form-group">
                     <label for="reg-email">Email</label>
                     <input type="email" id="reg-email" class="form-control" placeholder="email@anda.com">
                 </div>
+
+                <!-- Password -->
                 <div class="form-group password-group">
                     <label for="reg-password">Password</label>
                     <input type="password" id="reg-password" class="form-control" placeholder="Min. 8 karakter">
@@ -94,8 +107,11 @@
                         <i class="bi bi-eye"></i>
                     </button>
                 </div>
-                <button id="btn-register" class="btn-login secondary" onclick="registerUser()">
-                    <i class="bi bi-person-plus"></i> Buat Akun Baru
+
+                <!-- Action Button -->
+                <button id="btn-user-action" class="btn-login" onclick="handleUserAction()">
+                    <span class="btn-text"><i class="bi bi-box-arrow-in-right"></i> Masuk</span>
+                    <span class="btn-loader" style="display:none"><i class="bi bi-arrow-repeat spin"></i> Memproses...</span>
                 </button>
             </div>
 
@@ -208,6 +224,26 @@
             }
         };
 
+        // User email login
+        window.loginUser = async function() {
+            hideError();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+            if (!email || !password) {
+                showError('Email dan password wajib diisi!');
+                return;
+            }
+            setLoading('btn-user-action', true);
+            try {
+                const cred = await signInWithEmailAndPassword(auth, email, password);
+                await sendSession(cred.user, 'user');
+            } catch (e) {
+                showError('Login gagal: ' + (e.code === 'auth/invalid-credential' ? 'Email atau password salah.' : e.message));
+                setLoading('btn-user-action', false);
+            }
+        };
+
+        // User email registration
         window.registerUser = async function() {
             hideError();
             const nama = document.getElementById('reg-nama').value.trim();
@@ -244,7 +280,7 @@
                 console.warn('Email check failed, continuing with registration:', e);
             }
             
-            setLoading('btn-register', true);
+            setLoading('btn-user-action', true);
             try {
                 const cred = await createUserWithEmailAndPassword(auth, email, password);
                 await cred.user.updateProfile({
@@ -266,7 +302,37 @@
                 }
                 
                 showError(errorMsg);
-                setLoading('btn-register', false);
+                setLoading('btn-user-action', false);
+            }
+        };
+
+        // Switch user login vs register
+        window.currentUserAction = 'login';
+        window.switchUserAction = function(action) {
+            window.currentUserAction = action;
+            const groupNama = document.getElementById('user-group-nama');
+            const btnText = document.querySelector('#btn-user-action .btn-text');
+            const toggleLogin = document.getElementById('userToggleLogin');
+            const toggleRegister = document.getElementById('userToggleRegister');
+
+            if (action === 'login') {
+                if (groupNama) groupNama.style.display = 'none';
+                if (btnText) btnText.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Masuk';
+                if (toggleLogin) toggleLogin.classList.add('active');
+                if (toggleRegister) toggleRegister.classList.remove('active');
+            } else {
+                if (groupNama) groupNama.style.display = 'block';
+                if (btnText) btnText.innerHTML = '<i class="bi bi-person-plus"></i> Daftar Baru';
+                if (toggleLogin) toggleLogin.classList.remove('active');
+                if (toggleRegister) toggleRegister.classList.add('active');
+            }
+        };
+
+        window.handleUserAction = async function() {
+            if (window.currentUserAction === 'login') {
+                await window.loginUser();
+            } else {
+                await window.registerUser();
             }
         };
     </script>

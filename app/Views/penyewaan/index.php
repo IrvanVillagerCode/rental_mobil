@@ -85,7 +85,14 @@
                             <a href="<?= base_url('penyewaan/edit/' . $s['id_sewa']) ?>" class="btn-info-sm btn-sm" title="Edit">
                                 <i class="bi bi-pencil"></i>
                             </a>
-                            <a href="<?= base_url('cetak/nota/' . $s['id_sewa']) ?>" class="btn-warning-sm btn-sm" title="Cetak Nota" target="_blank">
+                            
+                            <?php if ($s['status_transaksi'] === 'menunggu_konfirmasi'): ?>
+                            <a href="<?= base_url('penyewaan/approve/' . $s['id_sewa']) ?>" class="btn-sm" title="Setujui Booking" style="background:#16a34a;color:#fff;padding:4px 8px;border-radius:4px;text-decoration:none">
+                                <i class="bi bi-check-circle"></i> Setujui
+                            </a>
+                            <?php endif; ?>
+
+                            <a href="<?= base_url('penyewaan/invoice/' . $s['id_sewa']) ?>" class="btn-warning-sm btn-sm" title="Cetak Nota Baru" target="_blank">
                                 <i class="bi bi-printer"></i>
                             </a>
                             <a href="<?= base_url('penyewaan/delete/' . $s['id_sewa']) ?>"

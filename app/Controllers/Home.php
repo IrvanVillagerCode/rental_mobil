@@ -16,8 +16,8 @@ class Home extends BaseController
     public function index(): string
     {
         $data = [
-            'mobil_tersedia' => $this->mobilModel->getMobilTersedia(),
-            'statistik'      => $this->mobilModel->getStatistik(),
+            'mobil_list' => $this->mobilModel->findAll(),
+            'statistik'  => $this->mobilModel->getStatistik(),
         ];
         return view('home/index', $data);
     }
@@ -25,7 +25,7 @@ class Home extends BaseController
     public function getMobilAjax()
     {
         $search = $this->request->getGet('search') ?? '';
-        $mobil = $this->mobilModel->getMobilTersedia();
+        $mobil = $this->mobilModel->findAll();
 
         if (!empty($search)) {
             $mobil = array_filter($mobil, function ($item) use ($search) {
@@ -33,8 +33,14 @@ class Home extends BaseController
                 return strpos(strtolower($item['merek']), $search_lower) !== false ||
                     strpos(strtolower($item['model']), $search_lower) !== false;
             });
+            $mobil = array_values($mobil);
         }
 
         return $this->response->setJSON(['data' => $mobil]);
+    }
+
+    public function getStatistikAjax()
+    {
+        return $this->response->setJSON($this->mobilModel->getStatistik());
     }
 }

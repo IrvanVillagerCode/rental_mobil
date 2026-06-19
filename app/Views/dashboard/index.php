@@ -6,9 +6,14 @@ $title     = 'Dashboard';
 $pageTitle = 'Dashboard';
 ?>
 
-<div class="page-header">
-    <h2><i class="bi bi-speedometer2"></i> Dashboard Overview</h2>
-    <span style="font-size:0.8rem;color:var(--text-muted)">Update realtime per <?= date('H:i') ?> WIB</span>
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <h2>Selamat Datang kembali, <?= esc(session()->get('nama') ?? 'Admin') ?>! 👋</h2>
+        <p>Berikut adalah ringkasan performa penyewaan armada Anda hari ini.</p>
+    </div>
+    <div class="welcome-date">
+        <i class="bi bi-clock"></i> Update: <span id="welcome-update-time"><?= date('H:i') ?></span> WIB
+    </div>
 </div>
 
 <!-- Stats Grid -->
@@ -17,15 +22,15 @@ $pageTitle = 'Dashboard';
         <div class="stat-icon purple"><i class="bi bi-car-front-fill"></i></div>
         <div class="stat-info">
             <div class="stat-label">Total Armada</div>
-            <div class="stat-value"><?= $statistik_mobil['total'] ?></div>
-            <div class="stat-sub"><?= $statistik_mobil['tersedia'] ?> tersedia</div>
+            <div class="stat-value" id="dashboard-stat-total"><?= $statistik_mobil['total'] ?></div>
+            <div class="stat-sub" id="dashboard-stat-total-sub"><?= $statistik_mobil['tersedia'] ?> tersedia</div>
         </div>
     </div>
     <div class="stat-card">
         <div class="stat-icon green"><i class="bi bi-check-circle"></i></div>
         <div class="stat-info">
             <div class="stat-label">Mobil Tersedia</div>
-            <div class="stat-value"><?= $statistik_mobil['tersedia'] ?></div>
+            <div class="stat-value" id="dashboard-stat-tersedia"><?= $statistik_mobil['tersedia'] ?></div>
             <div class="stat-sub">Siap disewa</div>
         </div>
     </div>
@@ -33,15 +38,15 @@ $pageTitle = 'Dashboard';
         <div class="stat-icon yellow"><i class="bi bi-file-earmark-text"></i></div>
         <div class="stat-info">
             <div class="stat-label">Transaksi Aktif</div>
-            <div class="stat-value"><?= $transaksi_aktif ?></div>
+            <div class="stat-value" id="dashboard-stat-transaksi-aktif"><?= $transaksi_aktif ?></div>
             <div class="stat-sub">Booking & berjalan</div>
         </div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card featured-stat">
         <div class="stat-icon blue"><i class="bi bi-cash-coin"></i></div>
         <div class="stat-info">
             <div class="stat-label">Pendapatan Hari Ini</div>
-            <div class="stat-value" style="font-size:1.1rem">Rp <?= number_format($pendapatan_hari, 0, ',', '.') ?></div>
+            <div class="stat-value" id="dashboard-stat-pendapatan-hari" style="font-size:1.3rem">Rp <?= number_format($pendapatan_hari, 0, ',', '.') ?></div>
             <div class="stat-sub"><?= date('d F Y') ?></div>
         </div>
     </div>
@@ -49,18 +54,18 @@ $pageTitle = 'Dashboard';
         <div class="stat-icon green"><i class="bi bi-graph-up"></i></div>
         <div class="stat-info">
             <div class="stat-label">Pendapatan Bulan Ini</div>
-            <div class="stat-value" style="font-size:1.1rem">Rp <?= number_format($pendapatan_bulan, 0, ',', '.') ?></div>
+            <div class="stat-value" id="dashboard-stat-pendapatan-bulan" style="font-size:1.2rem">Rp <?= number_format($pendapatan_bulan, 0, ',', '.') ?></div>
             <div class="stat-sub"><?= date('F Y') ?></div>
         </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-icon <?= $laba_kotor >= 0 ? 'green' : 'red' ?>"><i class="bi bi-bar-chart-line"></i></div>
+    <div class="stat-card featured-stat">
+        <div class="stat-icon <?= $laba_kotor >= 0 ? 'green' : 'red' ?>" id="dashboard-stat-laba-icon"><i class="bi bi-bar-chart-line"></i></div>
         <div class="stat-info">
             <div class="stat-label">Laba Kotor Bulan Ini</div>
-            <div class="stat-value" style="font-size:1.1rem;color:<?= $laba_kotor >= 0 ? '#10b981' : '#ef4444' ?>">
+            <div class="stat-value" id="dashboard-stat-laba-kotor" style="font-size:1.3rem;color:<?= $laba_kotor >= 0 ? '#10b981' : '#ef4444' ?>">
                 Rp <?= number_format(abs($laba_kotor), 0, ',', '.') ?>
             </div>
-            <div class="stat-sub">Biaya: Rp <?= number_format($biaya_bulan, 0, ',', '.') ?></div>
+            <div class="stat-sub" id="dashboard-stat-biaya-bulan">Biaya: Rp <?= number_format($biaya_bulan, 0, ',', '.') ?></div>
         </div>
     </div>
 </div>
@@ -125,13 +130,13 @@ $pageTitle = 'Dashboard';
             foreach ($statuses as [$key, $label, $color, $count]):
                 $pct = round($count / $total * 100);
             ?>
-            <div>
+            <div class="status-row" data-status-key="<?= $key ?>" data-status-label="<?= $label ?>" data-status-color="<?= $color ?>">
                 <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-                    <span style="font-size:0.82rem;font-weight:500;color:var(--text-secondary)"><?= $label ?></span>
-                    <span style="font-size:0.82rem;font-weight:700;color:<?= $color ?>"><?= $count ?> unit (<?= $pct ?>%)</span>
+                    <span style="font-size:0.82rem;font-weight:600;color:var(--text-primary)"><?= $label ?></span>
+                    <span class="status-text-val" style="font-size:0.82rem;font-weight:700;color:<?= $color ?>"><?= $count ?> unit (<?= $pct ?>%)</span>
                 </div>
-                <div style="height:8px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden">
-                    <div style="width:<?= $pct ?>%;height:100%;background:<?= $color ?>;border-radius:99px;transition:width 1s ease"></div>
+                <div style="height:10px;background:rgba(255,255,255,0.04);border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,0.2)">
+                    <div class="status-bar-val" style="width:<?= $pct ?>%;height:100%;background:linear-gradient(90deg, <?= $color ?>, transparent 200%);border-radius:99px;transition:width 1.5s cubic-bezier(0.4, 0, 0.2, 1);"></div>
                 </div>
             </div>
             <?php endforeach; ?>
@@ -153,5 +158,74 @@ $pageTitle = 'Dashboard';
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    function formatRupiah(num) {
+        return 'Rp ' + parseFloat(num || 0).toLocaleString('id-ID');
+    }
+
+    function updateDashboardStats() {
+        fetch('<?= base_url("dashboard/get-stats-ajax") ?>')
+            .then(response => response.json())
+            .then(data => {
+                // Update Welcome Time
+                const timeEl = document.getElementById('welcome-update-time');
+                if (timeEl) timeEl.textContent = data.update_time;
+
+                // Update Stats Grid
+                const totalEl = document.getElementById('dashboard-stat-total');
+                const totalSubEl = document.getElementById('dashboard-stat-total-sub');
+                const tersediaEl = document.getElementById('dashboard-stat-tersedia');
+                const aktifEl = document.getElementById('dashboard-stat-transaksi-aktif');
+                const hariEl = document.getElementById('dashboard-stat-pendapatan-hari');
+                const bulanEl = document.getElementById('dashboard-stat-pendapatan-bulan');
+                const labaEl = document.getElementById('dashboard-stat-laba-kotor');
+                const labaIconEl = document.getElementById('dashboard-stat-laba-icon');
+                const biayaEl = document.getElementById('dashboard-stat-biaya-bulan');
+
+                if (totalEl) totalEl.textContent = data.statistik_mobil.total;
+                if (totalSubEl) totalSubEl.textContent = data.statistik_mobil.tersedia + ' tersedia';
+                if (tersediaEl) tersediaEl.textContent = data.statistik_mobil.tersedia;
+                if (aktifEl) aktifEl.textContent = data.transaksi_aktif;
+                if (hariEl) hariEl.textContent = formatRupiah(data.pendapatan_hari);
+                if (bulanEl) bulanEl.textContent = formatRupiah(data.pendapatan_bulan);
+                
+                if (labaEl) {
+                    labaEl.textContent = formatRupiah(Math.abs(data.laba_kotor));
+                    labaEl.style.color = data.laba_kotor >= 0 ? '#10b981' : '#ef4444';
+                }
+                if (labaIconEl) {
+                    labaIconEl.className = 'stat-icon ' + (data.laba_kotor >= 0 ? 'green' : 'red');
+                }
+                if (biayaEl) {
+                    biayaEl.textContent = 'Biaya: ' + formatRupiah(data.biaya_bulan);
+                }
+
+                // Update Status Armada Progress Bars
+                const totalMobil = parseInt(data.statistik_mobil.total) || 1;
+                document.querySelectorAll('.status-row').forEach(row => {
+                    const key = row.getAttribute('data-status-key');
+                    const count = parseInt(data.statistik_mobil[key]) || 0;
+                    const pct = Math.round(count / totalMobil * 100);
+
+                    const textVal = row.querySelector('.status-text-val');
+                    const barVal = row.querySelector('.status-bar-val');
+
+                    if (textVal) {
+                        textVal.textContent = count + ' unit (' + pct + '%)';
+                    }
+                    if (barVal) {
+                        barVal.style.width = pct + '%';
+                    }
+                });
+            })
+            .catch(err => console.error('Error fetching dashboard stats:', err));
+    }
+
+    // Poll every 5 seconds
+    setInterval(updateDashboardStats, 5000);
+});
+</script>
 
 <?php $this->endSection() ?>

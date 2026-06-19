@@ -8,6 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('/home', 'Home::index');
 $routes->get('/home/get-mobil-ajax', 'Home::getMobilAjax');
+$routes->get('/home/get-statistik-ajax', 'Home::getStatistikAjax');
 $routes->get('/login', 'Auth::index');
 $routes->get('/auth/check-email-exists', 'Auth::checkEmailExists');
 $routes->post('/auth/set-session', 'Auth::setSession');
@@ -18,6 +19,16 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
     // Dashboard
     $routes->get('/dashboard', 'Dashboard::index');
+    $routes->get('/dashboard/get-stats-ajax', 'Dashboard::getStatsAjax');
+    $routes->get('/cetak/nota/(:num)', 'Cetak::nota/$1');
+    
+    // Booking Mobil (Pelanggan & Admin)
+    $routes->get('/penyewaan/create', 'Penyewaan::create');
+    $routes->post('/penyewaan/store', 'Penyewaan::store');
+    $routes->post('/penyewaan/extend-ajax/(:num)', 'Penyewaan::extendAjax/$1');
+    $routes->get('/penyewaan/bayar-online/(:num)', 'Penyewaan::bayarOnline/$1');
+    $routes->post('/penyewaan/proses-bayar-online/(:num)', 'Penyewaan::prosesBayarOnline/$1');
+    $routes->get('/penyewaan/invoice/(:num)', 'Penyewaan::invoice/$1');
 
     // Manajemen Armada Mobil (admin only)
     $routes->group('mobil', ['filter' => 'auth:admin'], function ($routes) {
@@ -32,8 +43,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     // Penyewaan (admin only)
     $routes->group('penyewaan', ['filter' => 'auth:admin'], function ($routes) {
         $routes->get('/', 'Penyewaan::index');
-        $routes->get('create', 'Penyewaan::create');
-        $routes->post('store', 'Penyewaan::store');
+        $routes->get('approve/(:num)', 'Penyewaan::approve/$1');
         $routes->get('edit/(:num)', 'Penyewaan::edit/$1');
         $routes->post('update/(:num)', 'Penyewaan::update/$1');
         $routes->get('delete/(:num)', 'Penyewaan::delete/$1');
@@ -49,7 +59,6 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
     // Cetak PDF (admin only)
     $routes->group('cetak', ['filter' => 'auth:admin'], function ($routes) {
-        $routes->get('nota/(:num)', 'Cetak::nota/$1');
         $routes->get('harian', 'Cetak::harian');
         $routes->get('bulanan', 'Cetak::bulanan');
         $routes->get('tahunan', 'Cetak::tahunan');
