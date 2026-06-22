@@ -349,18 +349,62 @@
             filter: drop-shadow(0 0 15px var(--accent-glow));
         }
 
-        .vehicle-badge {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: rgba(16,185,129,0.15);
-            color: var(--success);
-            padding: 6px 14px;
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
             border-radius: 99px;
+            font-size: 0.7rem;
             font-weight: 700;
-            font-size: 0.8rem;
-            border: 1px solid rgba(16,185,129,0.3);
-            backdrop-filter: blur(4px);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            border: 1px solid transparent;
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background: rgba(26, 31, 53, 0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-secondary);
+            padding: 10px 24px;
+            border-radius: 99px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+        }
+        
+        .filter-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+            transform: translateY(-2px);
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .vehicle-card {
+            animation: fadeUpCard 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        @keyframes fadeUpCard {
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .vehicle-info {
@@ -691,6 +735,19 @@
             <div class="section-title">
                 <h2>Katalog Eksklusif</h2>
                 <p>Pilih dari koleksi armada premium kami yang selalu terawat dan siap menemani perjalanan Anda.</p>
+                <div style="margin-top: 20px;">
+                    <button onclick="history.back()" class="btn-back" style="background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid rgba(255,255,255,0.1); padding: 8px 20px; border-radius: 99px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                        <i class="fas fa-arrow-left me-2"></i> Kembali ke Halaman Sebelumnya
+                    </button>
+                </div>
+            </div>
+
+            <div class="category-filters" id="categoryFilters">
+                <button class="filter-btn active" data-filter="all">Semua Armada</button>
+                <button class="filter-btn" data-filter="honda">Honda</button>
+                <button class="filter-btn" data-filter="toyota">Toyota</button>
+                <button class="filter-btn" data-filter="wuling">Wuling</button>
+                <button class="filter-btn" data-filter="mitsubishi">Mitsubishi</button>
             </div>
 
             <div id="vehiclesContainer" class="row g-4">
@@ -703,7 +760,7 @@
                         </div>
                     </div>
                 <?php else: ?>
-                    <?php foreach ($mobil_list as $mobil): ?>
+                    <?php foreach ($mobil_list as $idx => $mobil): ?>
                         <?php
                         $statusVal = $mobil['status_mobil'];
                         $badgeStyle = '';
@@ -714,31 +771,31 @@
                         $btnText = 'Booking';
 
                         if ($statusVal === 'tersedia') {
-                            $badgeStyle = 'background: rgba(16,185,129,0.15); color: var(--success); border-color: rgba(16,185,129,0.3);';
-                            $badgeText = '<i class="fas fa-check-circle me-1"></i>Tersedia';
+                            $badgeStyle = 'background: rgba(16,185,129,0.1); color: var(--success); border-color: rgba(16,185,129,0.3);';
+                            $badgeText = '<i class="fas fa-check-circle"></i> Tersedia';
                             $btnText = 'Booking';
                             $btnIcon = 'fa-arrow-right';
                         } elseif ($statusVal === 'disewa') {
-                            $badgeStyle = 'background: rgba(108,99,255,0.15); color: var(--accent-light); border-color: rgba(108,99,255,0.3);';
-                            $badgeText = '<i class="fas fa-route me-1"></i>Sedang Disewa';
+                            $badgeStyle = 'background: rgba(108,99,255,0.1); color: var(--accent-light); border-color: rgba(108,99,255,0.3);';
+                            $badgeText = '<i class="fas fa-route"></i> Sedang Disewa';
                             $btnExtra = 'disabled style="opacity: 0.5; cursor: not-allowed; background: var(--bg-hover); box-shadow: none;"';
                             $btnText = 'Sedang Jalan';
                             $btnIcon = 'fa-ban';
                         } elseif ($statusVal === 'perawatan') {
-                            $badgeStyle = 'background: rgba(245,158,11,0.15); color: var(--warning); border-color: rgba(245,158,11,0.3);';
-                            $badgeText = '<i class="fas fa-wrench me-1"></i>Perbaikan';
+                            $badgeStyle = 'background: rgba(245,158,11,0.1); color: var(--warning); border-color: rgba(245,158,11,0.3);';
+                            $badgeText = '<i class="fas fa-wrench"></i> Perbaikan';
                             $btnExtra = 'disabled style="opacity: 0.5; cursor: not-allowed; background: var(--bg-hover); box-shadow: none;"';
                             $btnText = 'Perbaikan';
                             $btnIcon = 'fa-wrench';
                         }
                         ?>
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-md-6 vehicle-item" data-category="<?= strtolower($mobil['merek']) ?>" style="animation-delay: <?= $idx * 0.1 ?>s">
                             <div class="vehicle-card">
                                 <div class="vehicle-image">
-                                    <i class="fas fa-car-side"></i>
-                                    <span class="vehicle-badge" style="<?= $badgeStyle ?>"><?= $badgeText ?></span>
+                                    <img src="<?= $mobil['image_url'] ?>" alt="Mobil" style="width:100%; height:100%; object-fit:cover; transition: transform 0.5s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                                 </div>
                                 <div class="vehicle-info">
+                                    <div class="status-pill" style="<?= $badgeStyle ?>"><?= $badgeText ?></div>
                                     <div class="vehicle-brand"><?= htmlspecialchars($mobil['merek']) ?></div>
                                     <div class="vehicle-model"><?= htmlspecialchars($mobil['model']) ?></div>
 
@@ -825,19 +882,54 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
+        // Animations and Navbar scroll effect
+        window.addEventListener('scroll', () => {
             const navbar = document.querySelector('.navbar');
             if (window.scrollY > 50) {
-                navbar.style.background = 'rgba(13, 15, 24, 0.9)';
-                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+                navbar.style.background = 'rgba(13, 15, 24, 0.95)';
+                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.5)';
             } else {
                 navbar.style.background = 'rgba(13, 15, 24, 0.7)';
                 navbar.style.boxShadow = 'none';
             }
         });
 
-        // Search functionality
+        // Category Filter Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const vehicles = document.querySelectorAll('.vehicle-item');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // Add active to clicked
+                    btn.classList.add('active');
+
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    vehicles.forEach((item, index) => {
+                        // Reset animation
+                        item.style.animation = 'none';
+                        item.offsetHeight; // trigger reflow
+
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'block';
+                            // Re-apply animation with slight delay stagger
+                            item.style.animation = `fadeUpCard 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards`;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+
+        // Booking action
+        function bookingMobil(id) {
+            window.location.href = `<?= base_url('penyewaan/create?mobil=') ?>${id}`;
+        }
+
         function searchMobil() {
             const searchValue = document.getElementById('searchInput').value.trim();
 
@@ -846,10 +938,15 @@
                 return;
             }
 
+            // Reset category filters when searching
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+
             fetch(`<?= base_url('home/get-mobil-ajax') ?>?search=${encodeURIComponent(searchValue)}`)
                 .then(response => response.json())
                 .then(data => {
                     displayMobil(data.data);
+                    document.getElementById('vehicles').scrollIntoView({behavior: 'smooth'});
                 })
                 .catch(error => console.error('Error:', error));
         }
@@ -871,7 +968,7 @@
             }
 
             let html = '';
-            mobil.forEach(m => {
+            mobil.forEach((m, idx) => {
                 const isLoggedIn = <?= session()->get('logged_in') ? 'true' : 'false' ?>;
                 
                 let badgeStyle = '';
@@ -879,30 +976,30 @@
                 let btnHtml = '';
 
                 if (m.status_mobil === 'tersedia') {
-                    badgeStyle = 'background: rgba(16,185,129,0.15); color: var(--success); border-color: rgba(16,185,129,0.3);';
-                    badgeText = '<i class="fas fa-check-circle me-1"></i>Tersedia';
+                    badgeStyle = 'background: rgba(16,185,129,0.1); color: var(--success); border-color: rgba(16,185,129,0.3);';
+                    badgeText = '<i class="fas fa-check-circle"></i> Tersedia';
                     
                     btnHtml = isLoggedIn ?
                         `<button class="btn-booking" onclick="bookingMobil(${m.id_mobil})"><i class="fas fa-arrow-right"></i> Booking</button>` :
                         `<a href="<?= base_url('login') ?>" class="btn-booking"><i class="fas fa-lock"></i> Login</a>`;
                 } else if (m.status_mobil === 'disewa') {
-                    badgeStyle = 'background: rgba(108,99,255,0.15); color: var(--accent-light); border-color: rgba(108,99,255,0.3);';
-                    badgeText = '<i class="fas fa-route me-1"></i>Sedang Disewa';
+                    badgeStyle = 'background: rgba(108,99,255,0.1); color: var(--accent-light); border-color: rgba(108,99,255,0.3);';
+                    badgeText = '<i class="fas fa-route"></i> Sedang Disewa';
                     btnHtml = `<button class="btn-booking" disabled style="opacity: 0.5; cursor: not-allowed; background: var(--bg-hover); box-shadow: none;"><i class="fas fa-ban"></i> Sedang Jalan</button>`;
                 } else if (m.status_mobil === 'perawatan') {
-                    badgeStyle = 'background: rgba(245,158,11,0.15); color: var(--warning); border-color: rgba(245,158,11,0.3);';
-                    badgeText = '<i class="fas fa-wrench me-1"></i>Perbaikan';
+                    badgeStyle = 'background: rgba(245,158,11,0.1); color: var(--warning); border-color: rgba(245,158,11,0.3);';
+                    badgeText = '<i class="fas fa-wrench"></i> Perbaikan';
                     btnHtml = `<button class="btn-booking" disabled style="opacity: 0.5; cursor: not-allowed; background: var(--bg-hover); box-shadow: none;"><i class="fas fa-wrench"></i> Perbaikan</button>`;
                 }
 
                 html += `
-                    <div class="col-lg-4 col-md-6">
+                    <div class="col-lg-4 col-md-6 vehicle-item" data-category="${m.merek.toLowerCase()}" style="animation-delay: ${idx * 0.1}s">
                         <div class="vehicle-card">
                             <div class="vehicle-image">
-                                <i class="fas fa-car-side"></i>
-                                <span class="vehicle-badge" style="${badgeStyle}">${badgeText}</span>
+                                <img src="${m.image_url}" alt="Mobil" style="width:100%; height:100%; object-fit:cover; transition: transform 0.5s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                             </div>
                             <div class="vehicle-info">
+                                <div class="status-pill" style="${badgeStyle}">${badgeText}</div>
                                 <div class="vehicle-brand">${m.merek}</div>
                                 <div class="vehicle-model">${m.model}</div>
 
@@ -920,7 +1017,7 @@
                                 <div class="vehicle-price">
                                     <div class="price-tag">
                                         <span class="price-label">Tarif Sewa</span>
-                                        <div class="price-value">Rp${new Intl.NumberFormat('id-ID').format(m.harga_sewa_perhari)}<span>/hari</span></div>
+                                        <div class="price-value">Rp${parseInt(m.harga_sewa_perhari).toLocaleString('id-ID')}<span>/hari</span></div>
                                     </div>
                                     ${btnHtml}
                                 </div>

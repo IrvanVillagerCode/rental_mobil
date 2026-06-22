@@ -223,7 +223,20 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => console.error('Error fetching dashboard stats:', err));
     }
 
-    // Poll every 5 seconds
+    // Real-time clock for Update Time (Asia/Jakarta WIB)
+    function updateRealTimeClock() {
+        const timeEl = document.getElementById('welcome-update-time');
+        if (timeEl) {
+            const now = new Date();
+            const str = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Asia/Jakarta' }).replace(/\./g, ':');
+            timeEl.textContent = str;
+        }
+    }
+    // Start real-time clock
+    setInterval(updateRealTimeClock, 1000);
+    updateRealTimeClock();
+
+    // Poll server for stats every 5 seconds
     setInterval(updateDashboardStats, 5000);
 });
 </script>

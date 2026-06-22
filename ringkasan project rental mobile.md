@@ -6,8 +6,8 @@ Aplikasi berbasis web manajemen rental mobil modern yang dibangun menggunakan ar
 
 ## 👥 Anggota Kelompok 2
 * **Irvan Agus Saputra** - Informatics Engineering, Universitas Pelita Bangsa
-* [Nama Anggota 2] - [Peran/Kontribusi]
-* [Nama Anggota 3] - [Peran/Kontribusi]
+* **Adnan  Adha Febryan** - Informatics Engineering, Universitas Pelita Bangsa
+* **Bagus Sulistyo** - Informatics Engineering, Universitas Pelita Bangsa
 
 ---
 

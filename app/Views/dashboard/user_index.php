@@ -257,17 +257,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Real-time clock for Update Time (Asia/Jakarta WIB)
+    function updateRealTimeClock() {
+        const timeEl = document.getElementById('welcome-update-time');
+        if (timeEl) {
+            const now = new Date();
+            const str = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Asia/Jakarta' }).replace(/\./g, ':');
+            timeEl.textContent = str;
+        }
+    }
+    // Start real-time clock
+    setInterval(updateRealTimeClock, 1000);
+    updateRealTimeClock();
+
     // Poll stats from AJAX
     function updateCustomerStats() {
         fetch('<?= base_url("dashboard/get-stats-ajax") ?>')
             .then(response => response.json())
             .then(data => {
-                const timeEl = document.getElementById('welcome-update-time');
+                // Not updating time from AJAX anymore since we use JS clock
                 const totalEl = document.getElementById('user-stat-total');
                 const aktifEl = document.getElementById('user-stat-aktif');
                 const pengeluaranEl = document.getElementById('user-stat-pengeluaran');
 
-                if (timeEl) timeEl.textContent = data.update_time;
                 if (totalEl) totalEl.textContent = data.total_sewa;
                 if (aktifEl) aktifEl.textContent = data.sewa_aktif;
                 if (pengeluaranEl) pengeluaranEl.textContent = formatRupiah(data.total_pengeluaran);
