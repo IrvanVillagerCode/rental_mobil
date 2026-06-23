@@ -58,7 +58,10 @@ body { font-family: DejaVu Sans, Arial, sans-serif; font-size: 10px; color: #1f2
         <table class="header-grid">
             <tr>
                 <td>
-                    <div class="brand">RentaCar</div>
+                    <div class="brand" style="display:flex; align-items:center; gap:5px;">
+                        <img src="<?= FCPATH . 'assets/images/logo.png' ?>" alt="AutoVora Logo" style="height: 24px;">
+                        AutoVora
+                    </div>
                     <div class="subbrand">Nota transaksi penyewaan kendaraan</div>
                     <div class="subbrand">Kelompok 2 - Teknik Informatika</div>
                 </td>
@@ -180,7 +183,7 @@ body { font-family: DejaVu Sans, Arial, sans-serif; font-size: 10px; color: #1f2
                 <div class="sign">
                     <div class="sign-line"></div>
                     <div>Petugas</div>
-                    <div class="muted">RentaCar Management</div>
+                    <div class="muted">AutoVora Management</div>
                 </div>
             </td>
         </tr>

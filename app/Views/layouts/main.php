@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?? 'Rental Mobil – Sistem Informasi' ?></title>
-    <meta name="description" content="Sistem Informasi Rental Mobil – Kelompok 2 Teknik Informatika">
+    <title><?= $title ?? 'AutoVora – Premium Car Marketplace' ?></title>
+    <meta name="description" content="AutoVora – Premium Car Rental & Marketplace">
+    <link rel="icon" type="image/png" href="<?= base_url('assets/images/logo.png') ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -12,16 +13,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
     
-    <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/style.css?v=') . time() ?>">
 </head>
 <body>
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
-        <a href="<?= base_url('/') ?>" class="sidebar-brand">
-            <i class="bi bi-car-front-fill brand-icon"></i>
-            <div>
-                <div class="brand-name">RentaCar</div>
-                <div class="brand-sub">Management System</div>
+        <a href="<?= base_url('/') ?>" class="sidebar-brand" style="gap: 15px;">
+            <img src="<?= base_url('assets/images/logo.png') ?>" alt="AutoVora Logo" class="logo" style="max-height: 50px; width: auto; object-fit: contain;">
+            <div style="display:flex; flex-direction:column; justify-content:center;">
+                <div class="brand-name" style="line-height:1.2;">AutoVora</div>
+                <div class="brand-sub" style="line-height:1.2;">Premium Marketplace</div>
             </div>
         </a>
 
@@ -42,6 +43,10 @@
                 <i class="bi bi-file-earmark-text"></i>
                 <span>Penyewaan</span>
             </a>
+            <a href="<?= base_url('transaksi/monitoring') ?>" class="nav-item <?= str_starts_with(uri_string(), 'transaksi/monitoring') ? 'active' : '' ?>">
+                <i class="bi bi-wallet2"></i>
+                <span>Monitoring Payment</span>
+            </a>
             <a href="<?= base_url('biaya') ?>" class="nav-item <?= str_starts_with(uri_string(), 'biaya') ? 'active' : '' ?>">
                 <i class="bi bi-cash-stack"></i>
                 <span>Biaya Operasional</span>
@@ -59,6 +64,12 @@
             <a href="#modalTahunan" data-bs-toggle="modal" class="nav-item">
                 <i class="bi bi-graph-up-arrow"></i>
                 <span>Laporan Tahunan</span>
+            </a>
+            <?php else: ?>
+            <div class="nav-label">TRANSAKSI</div>
+            <a href="<?= base_url('transaksi/riwayat') ?>" class="nav-item <?= str_starts_with(uri_string(), 'transaksi/riwayat') ? 'active' : '' ?>">
+                <i class="bi bi-clock-history"></i>
+                <span>Riwayat Pembayaran</span>
             </a>
             <?php endif; ?>
         </nav>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rental Mobil - Sewa Kendaraan Berkualitas</title>
+    <title>AutoVora - Premium Car Marketplace</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -628,9 +628,9 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="<?= base_url('/') ?>">
-                <i class="fas fa-car-side"></i>
-                <span>RentaCar</span>
+            <a class="navbar-brand" href="<?= base_url('/') ?>" style="display:flex; align-items:center; gap:10px;">
+                <img src="<?= base_url('assets/images/logo.png') ?>" alt="AutoVora Logo" class="logo" style="max-height: 50px; width: auto; object-fit: contain;">
+                <span>AutoVora</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border-color: rgba(255,255,255,0.1);">
                 <i class="fas fa-bars" style="color: var(--text-primary);"></i>
@@ -843,8 +843,11 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h5><i class="fas fa-bolt"></i> RentaCar</h5>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">RentaCar menghadirkan revolusi pengalaman penyewaan mobil dengan armada modern, harga transparan, dan ekosistem digital yang efisien untuk setiap perjalanan Anda.</p>
+                    <h5 style="display:flex; align-items:center; gap:10px;">
+                        <img src="<?= base_url('assets/images/logo.png') ?>" alt="AutoVora Logo" class="logo" style="max-height: 30px;">
+                        AutoVora
+                    </h5>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">AutoVora menghadirkan revolusi pengalaman penyewaan mobil dengan armada modern, harga transparan, dan ekosistem digital yang efisien untuk setiap perjalanan Anda.</p>
                 </div>
                 <div class="footer-section">
                     <h5>Navigasi</h5>
@@ -858,7 +861,7 @@
                     <h5>Kontak Info</h5>
                     <ul>
                         <li><a href="#"><i class="fas fa-headset"></i> +62 812-3456-7890</a></li>
-                        <li><a href="#"><i class="fas fa-envelope-open-text"></i> hello@rentacar.id</a></li>
+                        <li><a href="#"><i class="fas fa-envelope-open-text"></i> hello@autovora.id</a></li>
                         <li><a href="#"><i class="fas fa-map-marked-alt"></i> Tech District, Jakarta</a></li>
                     </ul>
                 </div>
@@ -875,7 +878,7 @@
             <div class="footer-divider"></div>
 
             <div class="footer-bottom">
-                <p>&copy; 2026 RentaCar by Kelompok 2 Teknik Informatika. Dibuat dengan presisi tinggi.</p>
+                <p>&copy; 2026 AutoVora by Kelompok 2 Teknik Informatika. Dibuat dengan presisi tinggi.</p>
             </div>
         </div>
     </footer>

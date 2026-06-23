@@ -112,7 +112,7 @@ class Penyewaan extends BaseController
             return redirect()->to('/penyewaan')->with('success', 'Transaksi sewa berhasil ditambahkan!');
         } else {
             if ($metodePembayaran === 'online') {
-                return redirect()->to('/penyewaan/bayar-online/' . $idSewa);
+                return redirect()->to('/penyewaan/checkout-midtrans/' . $idSewa);
             }
             return redirect()->to('/dashboard')->with('success', 'Booking berhasil diajukan! Menunggu konfirmasi admin.');
         }
@@ -183,9 +183,20 @@ class Penyewaan extends BaseController
 
         $sewa = $this->penyewaanModel->find($id);
 
+        $totalDibayar = (float)$sewa['uang_muka'] + $pelunasan;
+        $totalTagihan = (float)$sewa['total_biaya'] + $denda;
+        
+        $statusPembayaran = ($totalDibayar >= $totalTagihan) ? 'lunas' : 'belum_lunas';
+
+        // Jika lunas dan status masih awal, otomatis jalankan
+        if ($statusPembayaran === 'lunas' && in_array($statusTransaksi, ['booking', 'menunggu_konfirmasi', 'menunggu_pembayaran'])) {
+            $statusTransaksi = 'berjalan';
+        }
+
         $this->penyewaanModel->update($id, [
             'pelunasan'        => $pelunasan,
             'denda'            => $denda,
+            'status_pembayaran'=> $statusPembayaran,
             'status_transaksi' => $statusTransaksi,
         ]);
 
@@ -204,7 +215,11 @@ class Penyewaan extends BaseController
             $this->mobilModel->update($sewa['id_mobil'], ['status_mobil' => 'tersedia']);
         }
 
-        return redirect()->to('/penyewaan')->with('success', 'Data penyewaan berhasil diperbarui!');
+        if ($statusPembayaran === 'belum_lunas') {
+            return redirect()->to('/penyewaan/invoice/' . $id)->with('warning', 'Pembayaran belum lunas. Dialihkan ke nota transaksi.');
+        } else {
+            return redirect()->to('/penyewaan')->with('success', 'Pembayaran LUNAS. Status transaksi diperbarui!');
+        }
     }
 
     public function delete(int $id): \CodeIgniter\HTTP\RedirectResponse

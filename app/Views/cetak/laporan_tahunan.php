@@ -36,7 +36,11 @@ tr:nth-child(even) td { background: #fafafa; }
 <body>
 <div class="container">
     <div class="header">
-        <h1>🚗 RentaCar</h1>
+        <!-- Use the absolute public path for dompdf -->
+        <h1 style="display:flex; align-items:center; gap:10px;">
+            <img src="<?= FCPATH . 'assets/images/logo.png' ?>" alt="AutoVora Logo" style="height: 40px;">
+            AutoVora
+        </h1>
         <h2>LAPORAN TAHUNAN – EVALUASI ASET & PAJAK</h2>
         <p>Tahun Fiskal: <strong><?= $tahun ?></strong> | Dicetak: <?= date('d/m/Y H:i') ?></p>
     </div>
@@ -132,7 +136,7 @@ tr:nth-child(even) td { background: #fafafa; }
     </table>
 
     <div class="footer">
-        Laporan Tahunan RentaCar – Kelompok 2, Teknik Informatika | Dicetak oleh Sistem Otomatis
+        Laporan Tahunan AutoVora – Kelompok 2, Teknik Informatika | Dicetak oleh Sistem Otomatis
     </div>
 </div>
 </body>

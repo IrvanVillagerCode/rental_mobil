@@ -41,8 +41,9 @@
     <div class="invoice-box">
         <div class="header">
             <div>
-                <h1>RENTAL MOBIL</h1>
-                <div style="font-size:15px; margin-top:5px; color:#666; font-weight:600">Sistem Reservasi Realtime</div>
+                <img src="<?= base_url('assets/images/logo.png') ?>" alt="AutoVora Logo" style="max-height: 50px; margin-bottom: 10px;">
+                <h1 style="display:none;">AUTOVORA</h1>
+                <div style="font-size:15px; margin-top:5px; color:#666; font-weight:600">Premium Marketplace</div>
             </div>
             <div style="text-align:right">
                 <strong style="font-size:18px; color:#333">NOTA TRANSAKSI #<?= str_pad($sewa['id_sewa'], 4, '0', STR_PAD_LEFT) ?></strong><br>
@@ -93,13 +94,26 @@
             </tbody>
         </table>
 
-        <div class="total">
-            Total Pembayaran: <span style="color:#6C63FF">Rp <?= number_format($sewa['total_biaya'], 0, ',', '.') ?></span>
+        <div class="total" style="text-align:right; margin-top:20px; font-size:14px; line-height:1.6">
+            Subtotal Biaya Sewa: Rp <?= number_format($sewa['total_biaya'], 0, ',', '.') ?><br>
+            Denda: Rp <?= number_format($sewa['denda'], 0, ',', '.') ?><br>
+            <strong>Total Tagihan: Rp <?= number_format($sewa['total_biaya'] + $sewa['denda'], 0, ',', '.') ?></strong><br>
+            <hr style="border:none; border-top:1px solid #ddd; width:250px; margin-left:auto; margin-top:5px; margin-bottom:5px">
+            Uang Muka (DP): Rp <?= number_format($sewa['uang_muka'], 0, ',', '.') ?><br>
+            Pelunasan: Rp <?= number_format($sewa['pelunasan'], 0, ',', '.') ?><br>
+            <?php 
+                $sisaTagihan = ($sewa['total_biaya'] + $sewa['denda']) - ($sewa['uang_muka'] + $sewa['pelunasan']); 
+                if ($sisaTagihan < 0) $sisaTagihan = 0;
+            ?>
+            <strong>Sisa Tagihan: <span style="color: <?= $sisaTagihan > 0 ? '#E74C3C' : '#2ECC71' ?>">Rp <?= number_format($sisaTagihan, 0, ',', '.') ?></span></strong><br>
+            <div style="margin-top:10px; font-size:16px;">
+                Status: <strong style="color: <?= $sisaTagihan > 0 ? '#E74C3C' : '#2ECC71' ?>"><?= $sisaTagihan > 0 ? 'BELUM LUNAS' : 'LUNAS' ?></strong>
+            </div>
         </div>
 
         <div class="footer">
-            <strong>Terima kasih telah menggunakan layanan Rental Mobil kami.</strong><br>
-            Nota ini sah secara sistem sebagai bukti transaksi dan konfirmasi pengambilan unit kendaraan.
+            <strong>Terima kasih telah menggunakan layanan AutoVora.</strong><br>
+            Nota ini sah secara sistem sebagai bukti transaksi dan konfirmasi penyewaan kendaraan premium.
         </div>
     </div>
 </body>

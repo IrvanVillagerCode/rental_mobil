@@ -14,6 +14,9 @@ $routes->get('/auth/check-email-exists', 'Auth::checkEmailExists');
 $routes->post('/auth/set-session', 'Auth::setSession');
 $routes->get('/logout', 'Auth::logout');
 
+// Webhook Midtrans (No Auth Required)
+$routes->post('/api/midtrans/callback', 'MidtransCallbackController::notification');
+
 // ─── PROTECTED ROUTES (harus login) ────────────────────────────────
 $routes->group('', ['filter' => 'auth'], function ($routes) {
 
@@ -29,6 +32,10 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->get('/penyewaan/bayar-online/(:num)', 'Penyewaan::bayarOnline/$1');
     $routes->post('/penyewaan/proses-bayar-online/(:num)', 'Penyewaan::prosesBayarOnline/$1');
     $routes->get('/penyewaan/invoice/(:num)', 'Penyewaan::invoice/$1');
+    $routes->get('/penyewaan/checkout-midtrans/(:num)', 'PaymentController::checkout/$1');
+    
+    // Transaksi User
+    $routes->get('/transaksi/riwayat', 'TransactionController::history');
 
     // Manajemen Armada Mobil (admin only)
     $routes->group('mobil', ['filter' => 'auth:admin'], function ($routes) {
@@ -39,6 +46,9 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
         $routes->post('update/(:num)', 'Mobil::update/$1');
         $routes->get('delete/(:num)', 'Mobil::delete/$1');
     });
+
+    // Monitoring Transaksi Midtrans (admin only)
+    $routes->get('/transaksi/monitoring', 'AdminTransactionController::index', ['filter' => 'auth:admin']);
 
     // Penyewaan (admin only)
     $routes->group('penyewaan', ['filter' => 'auth:admin'], function ($routes) {

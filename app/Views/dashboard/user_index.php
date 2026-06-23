@@ -100,7 +100,7 @@ $pageTitle = 'Dashboard Pelanggan';
                                 <i class="bi bi-printer" style="color: var(--primary)"></i> Cetak Nota
                             </a>
                             <?php elseif ($s['status_transaksi'] === 'menunggu_pembayaran'): ?>
-                            <a href="<?= base_url('penyewaan/bayar-online/' . $s['id_sewa']) ?>" class="btn-primary btn-sm">
+                            <a href="<?= base_url('penyewaan/checkout-midtrans/' . $s['id_sewa']) ?>" class="btn-primary btn-sm">
                                 <i class="bi bi-wallet2"></i> Bayar
                             </a>
                             <?php else: ?>
@@ -168,7 +168,7 @@ $pageTitle = 'Dashboard Pelanggan';
                     <i class="bi bi-search"></i> Cari & Booking Mobil
                 </a>
                 
-                <a href="https://wa.me/6281234567890?text=Halo%20RentaCar,%20saya%20butuh%20bantuan%20terkait%20penyewaan" target="_blank" class="btn-secondary" style="justify-content: center">
+                <a href="https://wa.me/6281234567890?text=Halo%20AutoVora,%20saya%20butuh%20bantuan%20terkait%20penyewaan" target="_blank" class="btn-secondary" style="justify-content: center">
                     <i class="bi bi-whatsapp" style="color:#25d366"></i> Hubungi Customer Service
                 </a>
             </div>

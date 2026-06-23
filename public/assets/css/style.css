@@ -54,6 +54,19 @@ a { text-decoration: none; color: inherit; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
 
+/* ─── LOGO STYLES ─────────────────────────────────── */
+.logo {
+    max-height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+@media (max-width: 768px){
+    .logo {
+        max-height: 40px;
+    }
+}
+
 /* ─── SIDEBAR ────────────────────────────────────── */
 .sidebar {
     position: fixed;

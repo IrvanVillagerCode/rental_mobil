@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login – Sistem Rental Mobil</title>
-    <meta name="description" content="Login ke Sistem Informasi Rental Mobil Kelompok 2">
+    <title>Login – AutoVora</title>
+    <meta name="description" content="Login ke AutoVora Premium Car Marketplace">
+    <link rel="icon" type="image/png" href="<?= base_url('assets/images/logo.png') ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -23,11 +24,11 @@
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <div class="login-logo">
-                    <i class="bi bi-car-front-fill"></i>
+                <div class="login-logo" style="background: transparent; box-shadow: none;">
+                    <img src="<?= base_url('assets/images/logo.png') ?>" alt="AutoVora Logo" class="logo" style="max-height: 60px;">
                 </div>
-                <h1>RentaCar</h1>
-                <p>Sistem Informasi Rental Mobil</p>
+                <h1>AutoVora</h1>
+                <p>Premium Car Marketplace</p>
                 <span class="login-badge">Kelompok 2 – Teknik Informatika</span>
             </div>
 
@@ -115,7 +116,7 @@
                 </button>
             </div>
 
-            <p class="login-footer">© 2026 Kelompok 2 – Teknik Informatika</p>
+            <p class="login-footer">© 2026 AutoVora by Kelompok 2 – Teknik Informatika</p>
         </div>
     </div>
 

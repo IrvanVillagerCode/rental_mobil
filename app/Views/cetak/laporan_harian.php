@@ -31,7 +31,11 @@ tr:nth-child(even) td { background: #fafafa; }
 <body>
 <div class="container">
     <div class="header">
-        <h1>🚗 RentaCar</h1>
+        <!-- Use the absolute public path for dompdf -->
+        <h1 style="display:flex; align-items:center; gap:10px;">
+            <img src="<?= FCPATH . 'assets/images/logo.png' ?>" alt="AutoVora Logo" style="height: 40px;">
+            AutoVora
+        </h1>
         <h2>LAPORAN HARIAN OPERASIONAL & TRANSAKSI</h2>
         <p>Tanggal: <strong><?= date('d F Y', strtotime($tanggal)) ?></strong> | Dicetak: <?= date('d/m/Y H:i') ?></p>
     </div>
@@ -96,7 +100,7 @@ tr:nth-child(even) td { background: #fafafa; }
     <?php endif; ?>
 
     <div class="footer">
-        Laporan Harian RentaCar – Kelompok 2, Teknik Informatika | Dicetak oleh Sistem Otomatis
+        Laporan Harian AutoVora – Kelompok 2, Teknik Informatika | Dicetak oleh Sistem Otomatis
     </div>
 </div>
 </body>
